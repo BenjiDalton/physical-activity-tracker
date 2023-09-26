@@ -30,8 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/fullcalendar/main.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
