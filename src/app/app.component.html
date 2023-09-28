@@ -11,6 +11,10 @@
 			<div class="form-row">
 				<div class="form-group">
 					<!-- <label for="distanceEntry" style="left: 0px">Enter Player Name</label> -->
+					<input type="text" placeholder="Date" name="dateEntry" required>
+				</div>
+				<div class="form-group">
+					<!-- <label for="distanceEntry" style="left: 0px">Enter Player Name</label> -->
 					<input type="text" placeholder="Distance" name="distanceEntry" required>
 				</div>
 				<div class="form-group" style="flex-direction: row; justify-content: space-evenly;">
@@ -46,6 +50,20 @@
 			<!-- <div class="button add-player-button" (click)="addPlayer()"><i class="fa fa-user-plus"></i></div>
 			<div class="button close-button" (click)="closePlayerInput()">Done</div> -->
 		</div>
+	</div>
+	<head>
+		<title>Dynamic Table</title>
+	</head>
+	<table id="dataTable">
+		<thead>
+			<tr id="tableHeaders">
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<div>
+		<canvas id="myChart"></canvas>
 	</div>
 </div>
 

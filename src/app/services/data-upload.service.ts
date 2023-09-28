@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   	providedIn: 'root'
@@ -27,4 +28,13 @@ export class DataUploadService {
 			);
 		});
 	}
+	public pullData(): Observable<any[]> {
+		return new Observable<any[]>((observer) => {
+		this.http.get<any[]>('https://6oy0aulfj8.execute-api.us-east-2.amazonaws.com/dev/pull-data').subscribe(result => {
+			console.log("data returned: ", result);
+			observer.next(result);
+			observer.complete();
+		})});
+	}
+	
 }
