@@ -10,15 +10,11 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 })
 export class AppComponent implements OnInit {
 	title = 'physical-activity-tracker';
-	private sampleData = [
-		["2023-09-27", "5.0", "8.0", "45:00", "9:00"],
-		["2023-09-26", "3.5", "5.6", "30:00", "8:34"]
-	];
 	
+	private tableData: any;
 	public tableColumns = [
 		"Date",
 		"Distance (mi)",
-		"Distance (km)",
 		"Time",
 		"Pace"
 	]
@@ -36,7 +32,7 @@ export class AppComponent implements OnInit {
 	ngOnInit(): void {
 		
 		this.dataUploadService.pullData().subscribe((result) => {
-			console.log("result from data upload serviceL: ", result);
+			this.tableData = result;
 		});;
 	}
 
@@ -81,9 +77,16 @@ export class AppComponent implements OnInit {
 			"Pace": calculatedPace
 		});
 
+		this.closeDataEntry();
+	}
+	public createTable(): void {
+		let table = document.getElementById('dataTable') as HTMLElement;
+		// if ( table.style.display !== "none" ) {
+		// 	table.parentNode?.removeChild(table);
+		// }
 		this.createTableHeaders();
 		this.populateTableWithData();
-		this.closeDataEntry();
+		this.fillChartData();
 	}
 	private createTableHeaders(): void {
 		let tableHeadersRow = document.getElementById("tableHeaders");
@@ -97,125 +100,110 @@ export class AppComponent implements OnInit {
 	private populateTableWithData(): void {
 		let table = document.getElementById("dataTable") as HTMLElement;
 		let tbody = table?.getElementsByTagName("tbody")[0];
-	
-		for ( const rowData of this.sampleData ) {
+		
+		this.tableData = this.tableData.map((item: any[], index: number) => {
+			const combinedTime = `${String(item[2]).padStart(2, '0')}:${String(item[3]).padStart(2, '0')}:${String(item[4]).padStart(2, '0')}`;
+			return [item[0], item[1], combinedTime, item[5]];
+		});
+		for ( const rowData of this.tableData ) {
 			let row = document.createElement("tr");
-			for ( let cellData of rowData ) {
+			for ( let i = 0; i < rowData.length; i++ ) {
 				const td = document.createElement("td");
+				let cellData = rowData[i];
+				if ( !isNaN(parseFloat(cellData)) && i === rowData.length - 1 ) {
+					cellData = parseFloat(cellData).toFixed(2);
+				}
 				td.textContent = cellData;
 				row.appendChild(td);
 			}
 			tbody?.appendChild(row);
 		}
-		table.style.display = "block";
-		this.fillChartData();
+		table.style.display = "inline-block";
 	}
 	private fillChartData(): void {
 		this.destroyChart();
-		this.chartData={"labels": {}, "datasets": []};
-		const increment=1;
-		let maxGames: any;
-		let pointStyle: any;
-		
-		// const labels = Array.from({ length: Math.ceil(maxGames / increment) }, (_, index) => (index * increment).toString());
-		// this.chartData["labels"] = labels;
-		
-		// const yearData=this.activeTeams[year].map((team: any, index: any) => ({
-		// 	label: team.name + ` (${year})`,
-		// 	data: team.netRecord
-			// backgroundColor: team.mainColor,
-			// borderColor: team.secondaryColor,
-			// borderWidth: 2,
-			// pointRadius: this.pointRadius,
-			// pointStyle: pointStyle
-		// }));
-
-
-		// this.chartData["datasets"] = {
-		// 	label: this.tableColumns['Date'],
-		// 	data: this.tableColumns['Distance (km)']
-		// };
-		console.log(this.chartData)
-		
-		// this.generateChart();
+		this.chartData = {
+			labels: this.tableData.slice(0).map((item: any[]) => item[0]), // Dates
+			datasets: [
+				{
+					label: "Distance", // Label for your dataset
+					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[1])), // Numeric data
+					borderColor: "blue",
+					borderWidth: 2,
+					
+				}
+			]
+		};
+		this.generateChart();
 	}
-	// private generateChart(): void {
-	// 	const canvas: any = document.getElementById("myChart");
-	// 	this.chart = new Chart(canvas, {
-	// 		type: 'line',
-	// 		data: {
-	// 			labels: this.tableColumns['Date'],
-	// 			datasets: [{
-	// 				label: 'Distance (mi)',
-	// 				data: this.tableColumns['Distance (mi)'],
-	// 				borderColor: 'blue',
-	// 				borderWidth: 2,
-	// 				pointRadius: 6
-	// 			}]
-	// 		},
-	// 		options: {
-	// 			scales: {
-	// 				y: {
-	// 					beginAtZero: true,
-	// 					grid: {
-	// 						display: false
-	// 					}
-	// 				},
-	// 				x: {
-	// 					beginAtZero: false,
-	// 					grid: {
-	// 						display: false
-	// 					}
-	// 				}
-	// 			},
-	// 			interaction: {
-	// 				intersect: true,
-	// 				mode: 'index'
-	// 			},
-	// 			plugins: {
-	// 				tooltip: {
-	// 					callbacks: {
-	// 						label: function(context) {
-	// 							// this.title = ["Game"+ `${context.dataIndex + 1}`];
-	// 							// let label = context.dataset.label || '';
-	// 							// let wins = 0;
-	// 							// let losses = 0;
-	// 							// if (label) {
-	// 							// 	label += ': ';
-	// 							// }
-	// 							// if (context.parsed.y !== null) {
-	// 							// 	const dataIndex = context.dataIndex;
-	// 							// 	const winLoss: any = context.dataset.data;
-	// 							// 	for (let i=0; i<=dataIndex; i++) {
-	// 							// 		const value: any=winLoss[i];
-	// 							// 		if (value > winLoss[i-1]) {
-	// 							// 			wins+=1;
-	// 							// 		} else {
-	// 							// 			losses+=1;
-	// 							// 		}
-	// 							// 	}
-	// 							// 	label+=`${wins}-${losses}`;
-	// 							// }
-	// 							// return label;
-	// 						}
-	// 					}
-	// 				},
-	// 				legend: {
-	// 					position: 'top',
-	// 					labels: {
-	// 						font: {
-	// 							size: 14,
-	// 							weight: 'bold'
-	// 						},
-	// 						usePointStyle: true
-	// 					}
-	// 				}
-	// 			},
-	// 		}
-	// 	});
-	// }
+	private generateChart(): void {
+		const canvas: any = document.getElementById("myChart");
+		this.chart = new Chart(canvas, {
+			type: 'line',
+			data: this.chartData,
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true,
+						grid: {
+							display: false
+						}
+					},
+					x: {
+						beginAtZero: false,
+						grid: {
+							display: false
+						}
+					}
+				},
+				interaction: {
+					intersect: true,
+					mode: 'index'
+				},
+				plugins: {
+					tooltip: {
+						callbacks: {
+							label: function(context) {
+								// this.title = ["Game"+ `${context.dataIndex + 1}`];
+								// let label = context.dataset.label || '';
+								// let wins = 0;
+								// let losses = 0;
+								// if (label) {
+								// 	label += ': ';
+								// }
+								// if (context.parsed.y !== null) {
+								// 	const dataIndex = context.dataIndex;
+								// 	const winLoss: any = context.dataset.data;
+								// 	for (let i=0; i<=dataIndex; i++) {
+								// 		const value: any=winLoss[i];
+								// 		if (value > winLoss[i-1]) {
+								// 			wins+=1;
+								// 		} else {
+								// 			losses+=1;
+								// 		}
+								// 	}
+								// 	label+=`${wins}-${losses}`;
+								// }
+								// return label;
+							}
+						}
+					},
+					legend: {
+						position: 'top',
+						labels: {
+							font: {
+								size: 14,
+								weight: 'bold'
+							},
+							usePointStyle: true
+						}
+					}
+				},
+			}
+		});
+	}
 	private destroyChart(): void {
-		if (this.chart) {
+		if ( this.chart ) {
 		  this.chart.destroy();
 		}
 	}

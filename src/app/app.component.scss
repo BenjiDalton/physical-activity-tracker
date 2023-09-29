@@ -8,6 +8,56 @@
 	height: 100vh;
 	overflow: hidden;
 
+	.toolbar {
+		display: flex;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 60px;
+		align-items: center;
+		background-color: #6aa1c4;
+		font-weight: 600;
+		border-radius: 0px;
+		img {
+		  margin-right: 20px;
+		}
+
+		.button-container {
+			position: relative;
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;  
+			height: inherit;
+
+			.button {
+				all: unset;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				background-color: inherit;
+				border-radius: 4px;
+				width: auto;
+				height: inherit;
+				padding: 0 10px 0;
+				transition: all 0.2s ease-in-out;
+			}
+			.button.active {
+				background-color: #424b50;
+			}
+			.button:hover {
+				cursor: pointer;
+				transform: scale(110%);
+			}
+		}
+		.spacer {
+			flex: 1;
+		}
+	}
+
 	.pop-up-modal {
 		display: none; 
 		position: fixed;
@@ -235,5 +285,58 @@
 		width: 55vw;
 		max-height: 600px;
 		z-index: -1;
+	}
+	$background: #efefef;
+	$lfs-blue: #006ac6;
+	$lfs-slateblue: #334288;
+	$lfs-grey: #454647;
+
+	.table-latitude {
+		border-collapse: collapse;
+		justify-content: center;
+		position: relative;
+		// left: 25%;
+		caption {
+			text-transform: uppercase;
+			font-weight: bold;
+			color: $lfs-slateblue;
+			text-align: center;
+		}
+		thead {
+			border-top: 2px solid $lfs-slateblue;
+			border-bottom: 2px solid $lfs-slateblue;
+			th {
+				text-transform: uppercase;
+				text-align: center;
+				padding: 10px;
+				color: $lfs-blue;
+				border: 1px solid #a52f2f;
+			}
+		}
+		tbody {
+			tr {
+				border-bottom: 1px solid #F1F1F1;
+				color: $lfs-grey;
+				td {
+					padding: 10px;
+					border: 1px solid #F1F1F1;
+				}
+				th {
+					padding-left: 10px;
+					border: 1px solid #F1F1F1;
+				}
+			}
+		}
+		tfoot {
+			color: $lfs-slateblue;
+			font-style: italic;
+			border-bottom: 2px solid $lfs-slateblue;
+			tr {
+				td {
+					padding: 10px;
+					border: 1px solid #F1F1F1;
+				}
+			}
+		}
 	}
 }

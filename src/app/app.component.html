@@ -3,7 +3,21 @@
 </head>
 
 <div class="container">
-	<div class="new-entry-button" (click)="openDataEntry()">Add Entry</div>
+	<div class="toolbar" role="banner">
+		<div class="button-container">
+			<div class="button" (click)="createTable()">View Data</div>
+			<div class="button" (click)="openDataEntry()">Add Entry</div>
+		</div>
+		<div class="spacer"></div>
+			<a href="https://github.com/BenjiDalton" target="_blank" rel="noopener">
+				<img
+				width="60"
+				alt="Github logo"
+				src="https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png"
+				/>
+			</a>
+	</div>
+	<!-- <div class="new-entry-button" (click)="openDataEntry()">Add Entry</div> -->
 	<!-- <div class="new-entry-button" [ngStyle]="{'right': '40%'}">Log in</div> -->
 	<div class="pop-up-modal" id="physical-acitvity-entry">
 		<div class="content">
@@ -51,17 +65,20 @@
 			<div class="button close-button" (click)="closePlayerInput()">Done</div> -->
 		</div>
 	</div>
-	<head>
-		<title>Dynamic Table</title>
-	</head>
-	<table id="dataTable">
+	<table class="table-latitude" id="dataTable" style="display: none;">
+		<caption>Physical Activity Data</caption>
 		<thead>
 			<tr id="tableHeaders">
 			</tr>
 		</thead>
-		<tbody>
+	   <tfoot>
+		   <tr>
+			   <td colspan=3>Single click on columns to sort, double click to graph</td>
+		   </tr>
+	   </tfoot>
+	   <tbody style="text-align: center;">
 		</tbody>
-	</table>
+   </table>
 	<div>
 		<canvas id="myChart"></canvas>
 	</div>
