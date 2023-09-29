@@ -277,6 +277,9 @@
 		justify-content: center;
 		position: relative;
 		// left: 25%;
+		:hover {
+			cursor: pointer;
+		}
 		caption {
 			text-transform: uppercase;
 			font-weight: bold;

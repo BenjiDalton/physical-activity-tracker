@@ -7,7 +7,7 @@ import { Chart } from 'chart.js/auto';
 export class ChartService {
 
   	constructor() { }
-
+	
 	private _axesColor = "#000000";
 	private _axesWidth = 2;
 	private _commonScaleOptions = {
@@ -34,9 +34,10 @@ export class ChartService {
 			display: true
 		}
 	};
+	private chart: any;
 
 	public newChart(canvas: HTMLCanvasElement, chartData: any): Chart {
-		return new Chart(canvas, {
+		this.chart = new Chart(canvas, {
 			type: 'line',
 			data: chartData,
 			options: {
@@ -83,8 +84,13 @@ export class ChartService {
 				},
 			}
 		});
+		return this.chart
 	}
-
+	
+	public highlightPoint(datasetIndex: number, rowIndex: number): void {
+		this.chart.setActiveElements([{ datasetIndex, index: rowIndex }]);
+		this.chart.update();
+	}
 	public set axesColor(axesColor: string) {
 		this._axesColor = axesColor;
 	}
