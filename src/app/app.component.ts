@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DataUploadService } from './services/data-upload.service';
+import { ChartService } from './services/chart.service';
 import { Chart } from 'chart.js/auto';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
 	selector: 'app-root',
@@ -10,6 +10,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 })
 export class AppComponent implements OnInit {
 	title = 'physical-activity-tracker';
+	constructor(private dataUploadService: DataUploadService, private chartService: ChartService) {}
 	
 	private tableData: any;
 	public tableColumns = [
@@ -23,14 +24,8 @@ export class AppComponent implements OnInit {
 		"labels": {},
 		"datasets": []
 	};
-	// new run button that pops ups a window when clicked
-	// field entries for time, distance, temperature, humidity, elevation
-	// submit button that sends info to python script that stores inputted information into SQL database
-	// log in button w/ optional new user display
-	constructor(private dataUploadService: DataUploadService) {}
 
 	ngOnInit(): void {
-		
 		this.dataUploadService.pullData().subscribe((result) => {
 			this.tableData = result;
 		});;
@@ -126,11 +121,11 @@ export class AppComponent implements OnInit {
 			labels: this.tableData.slice(0).map((item: any[]) => item[0]), // Dates
 			datasets: [
 				{
-					label: "Distance", // Label for your dataset
-					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[1])), // Numeric data
+					label: "Distance",
+					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[1])),
 					borderColor: "blue",
 					borderWidth: 2,
-					
+					pointRadius: 5
 				}
 			]
 		};
@@ -138,69 +133,7 @@ export class AppComponent implements OnInit {
 	}
 	private generateChart(): void {
 		const canvas: any = document.getElementById("myChart");
-		this.chart = new Chart(canvas, {
-			type: 'line',
-			data: this.chartData,
-			options: {
-				scales: {
-					y: {
-						beginAtZero: true,
-						grid: {
-							display: false
-						}
-					},
-					x: {
-						beginAtZero: false,
-						grid: {
-							display: false
-						}
-					}
-				},
-				interaction: {
-					intersect: true,
-					mode: 'index'
-				},
-				plugins: {
-					tooltip: {
-						callbacks: {
-							label: function(context) {
-								// this.title = ["Game"+ `${context.dataIndex + 1}`];
-								// let label = context.dataset.label || '';
-								// let wins = 0;
-								// let losses = 0;
-								// if (label) {
-								// 	label += ': ';
-								// }
-								// if (context.parsed.y !== null) {
-								// 	const dataIndex = context.dataIndex;
-								// 	const winLoss: any = context.dataset.data;
-								// 	for (let i=0; i<=dataIndex; i++) {
-								// 		const value: any=winLoss[i];
-								// 		if (value > winLoss[i-1]) {
-								// 			wins+=1;
-								// 		} else {
-								// 			losses+=1;
-								// 		}
-								// 	}
-								// 	label+=`${wins}-${losses}`;
-								// }
-								// return label;
-							}
-						}
-					},
-					legend: {
-						position: 'top',
-						labels: {
-							font: {
-								size: 14,
-								weight: 'bold'
-							},
-							usePointStyle: true
-						}
-					}
-				},
-			}
-		});
+		this.chartService.newChart(canvas, this.chartData);
 	}
 	private destroyChart(): void {
 		if ( this.chart ) {

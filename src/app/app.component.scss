@@ -7,6 +7,7 @@
 	align-items: center;
 	height: 100vh;
 	overflow: hidden;
+	background-color: inherit;
 
 	.toolbar {
 		display: flex;
@@ -165,26 +166,6 @@
 		}
 	}
 
-	.new-entry-button {
-		position: absolute;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 200px;
-		height: 100px;
-		background-color: rgb(23, 23, 30);
-		left: 2%;
-		top: 10%;
-		border-radius: 4px;
-		text-align: center;
-		color: whitesmoke;
-		font-size: xx-large;
-		user-select: none;
-	}
-	.new-entry-button:hover {
-		cursor: pointer;
-		background-color: rgb(23, 23, 30, 0.3);
-	}
 	.calendar {
 		display:inline-grid;
 		justify-content:center;
@@ -338,5 +319,9 @@
 				}
 			}
 		}
+	}
+
+	.button {
+		transition: all 0.2s ease-in-out;
 	}
 }
