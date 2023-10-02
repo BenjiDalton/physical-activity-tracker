@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit, ElementRef, Renderer2 } from '@angula
 import { DataUploadService } from './services/data-upload.service';
 import { ChartService } from './services/chart.service';
 import { Chart } from 'chart.js/auto';
+import { clone } from 'chart.js/dist/helpers/helpers.core';
+import { discardPeriodicTasks } from '@angular/core/testing';
 
 @Component({
 	selector: 'app-root',
@@ -108,7 +110,7 @@ export class AppComponent implements OnInit {
 		// }
 		this.createTableHeaders();
 		this.populateTableWithData();
-		this.fillChartData();
+		this.scoreRuns();
 	}
 	private createTableHeaders(): void {
 		let tableHeadersRow = document.getElementById("tableHeaders");
@@ -167,6 +169,7 @@ export class AppComponent implements OnInit {
 		});
 	}
 	public sortTable(target: any): void {
+		this.scoreRuns();
 		var table, rows, switching, i, x, y, shouldSwitch, sortDirection, switchcount = 0;
 		/* get index of column chosen */
 		let columnIndex = this.tableColumns.indexOf(target.getAttribute("data-sort-by"));
@@ -177,7 +180,7 @@ export class AppComponent implements OnInit {
 			switching = false;
 			rows = table.rows;
 			// loop through rows, ignoring header row
-			for (i = 1; i < (rows.length - 1); i++) {
+			for ( i = 1; i < (rows.length - 1); i++ ) {
 			// Start by saying there should be no switching:
 			shouldSwitch = false;
 			// get rows to compare from specific column pressed
@@ -217,6 +220,33 @@ export class AppComponent implements OnInit {
 			}
 		}
 	}
+
+	private scoreRuns(): void {
+		console.log("table data: ", this.tableData)
+		let clonedData = this.tableData;
+		let scoreSums: Array<number> = [];
+
+		let sortedDistance = clonedData.slice().sort((a: number[], b: number[]) => a[1] - b[1])
+		let sortedPace = clonedData.slice().sort((a: number[], b: number[]) => b[3] - a[3])
+		let distanceScores = this.calculateScores(clonedData, sortedDistance)
+		let paceScores = this.calculateScores(clonedData, sortedPace)
+
+		for ( let i = 0; i < (distanceScores.length); i++ ) {
+			this.tableData[i][this.tableData[i].length] = distanceScores[i] + paceScores[i];
+		}
+		
+		this.fillChartData();
+	}
+	private calculateScores(dataArray: Array<any>, sortedData: Array<any>): Array<any> {
+		const scores: number[] = [];
+		const length = dataArray.length;
+		for ( let data of dataArray ) {
+			let indexInSorted = sortedData.indexOf(data);
+			let score = 1 + (indexInSorted / (length - 1)) * (length - 1);
+			scores.push(score);
+		}
+		return scores;
+	}
 	/* chart functions */
 	private fillChartData(): void {
 		this.destroyChart();
@@ -230,7 +260,18 @@ export class AppComponent implements OnInit {
 					borderWidth: 4,
 					pointRadius: 5,
 					hoverBorderWidth: 10,
-					hoverBorderColor: "#FF00B7"
+					hoverBorderColor: "#FF00B7",
+					yAxisID: "y"
+				},
+				{
+					label: "Run Score",
+					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[4])),
+					borderColor: "#302868",
+					borderWidth: 4,
+					pointRadius: 5,
+					hoverBorderWidth: 10,
+					hoverBorderColor: "#FF00B7",
+					yAxisID: "y1"
 				}
 			]
 		};

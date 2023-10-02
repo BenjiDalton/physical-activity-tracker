@@ -37,6 +37,7 @@ export class ChartService {
 	private chart: any;
 
 	public newChart(canvas: HTMLCanvasElement, chartData: any): Chart {
+		console.log("chart data in chart service: ", chartData)
 		this.chart = new Chart(canvas, {
 			type: 'line',
 			data: chartData,
@@ -48,6 +49,17 @@ export class ChartService {
 							text: 'Distance (miles)'
 						},
 						beginAtZero: true
+					},
+					y1: {
+						...this._commonScaleOptions,
+						type: 'linear',
+						display: true,
+						position: 'right',
+				
+						// grid line settings
+						grid: {
+						  	drawOnChartArea: false, // only want the grid lines for one axis to show up
+						},
 					},
 					x: {
 						...this._commonScaleOptions,
