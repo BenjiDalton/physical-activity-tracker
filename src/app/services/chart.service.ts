@@ -10,6 +10,8 @@ export class ChartService {
 	
 	private _axesColor = "#000000";
 	private _axesWidth = 2;
+	private _primaryYAxisColor = "#554AA4"
+	private _secondaryYAxisColor = "#D45807"
 	private _commonScaleOptions = {
 		title: {
 			display: true,
@@ -35,7 +37,39 @@ export class ChartService {
 		}
 	};
 	private chart: any;
+	private chartData: any = {
+		"labels": {},
+		"datasets": []
+	};
 
+
+	public fillData(tableData: Array<any>, xIndex: number, primaryYIndex: number, secondaryYIndex: number): any {
+		return {
+			labels: tableData.slice(0).map((item: any[]) => item[xIndex]), // Dates
+			datasets: [
+				{
+					label: "Distance",
+					data: tableData.slice(0).map((item: any[]) => parseFloat(item[primaryYIndex])),
+					borderColor: this._primaryYAxisColor,
+					borderWidth: 4,
+					pointRadius: 5,
+					hoverBorderWidth: 10,
+					hoverBorderColor: "#554AA4",
+					yAxisID: "y"
+				},
+				{
+					label: "Run Score",
+					data: tableData.slice(0).map((item: any[]) => parseFloat(item[secondaryYIndex])),
+					borderColor: this._secondaryYAxisColor,
+					borderWidth: 4,
+					pointRadius: 5,
+					hoverBorderWidth: 10,
+					hoverBorderColor: "#FF00B7",
+					yAxisID: "y1"
+				}
+			]
+		}
+	}
 	public newChart(canvas: HTMLCanvasElement, chartData: any): Chart {
 		console.log("chart data in chart service: ", chartData)
 		this.chart = new Chart(canvas, {
@@ -44,22 +78,49 @@ export class ChartService {
 			options: {
 				scales: {
 					y: {
-						...this._commonScaleOptions,
 						title: {
-							text: 'Distance (miles)'
+							text: 'Distance (miles)',
+							display: true,
+							font: {
+								size: 14,
+								weight: 'bold'
+							},
+							color: this._primaryYAxisColor
+						},
+						grid: {
+							drawOnChartArea: false,
+							drawTicks: true,
+							lineWidth: this._axesWidth,
+							color: this._primaryYAxisColor
+						},
+						border: {
+							width: this._axesWidth,
+							color: this._primaryYAxisColor
 						},
 						beginAtZero: true
 					},
 					y1: {
-						...this._commonScaleOptions,
-						type: 'linear',
-						display: true,
-						position: 'right',
-				
-						// grid line settings
-						grid: {
-						  	drawOnChartArea: false, // only want the grid lines for one axis to show up
+						position: "right",
+						title: {
+							text: 'Run Score (Distance + Pace)',
+							display: true,
+							font: {
+								size: 14,
+								weight: 'bold'
+							},
+							color: this._secondaryYAxisColor
 						},
+						grid: {
+							drawOnChartArea: false,
+							drawTicks: true,
+							lineWidth: this._axesWidth,
+							color: this._secondaryYAxisColor
+						},
+						border: {
+							width: this._axesWidth,
+							color: this._secondaryYAxisColor
+						},
+						beginAtZero: true
 					},
 					x: {
 						...this._commonScaleOptions,

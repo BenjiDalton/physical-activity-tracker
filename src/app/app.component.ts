@@ -104,10 +104,6 @@ export class AppComponent implements OnInit {
 	}
 	/* table functions */
 	public createTable(): void {
-		let table = document.getElementById('dataTable') as HTMLElement;
-		// if ( table.style.display !== "none" ) {
-		// 	table.parentNode?.removeChild(table);
-		// }
 		this.createTableHeaders();
 		this.populateTableWithData();
 		this.scoreRuns();
@@ -157,7 +153,10 @@ export class AppComponent implements OnInit {
 			if (target.tagName.toLowerCase() === "td") {
 				let row = target.parentElement as HTMLTableRowElement; /* grab specific cells entire row */
 				row.style.backgroundColor = "rgba(0, 0, 0, .50)" /* highlight entire row on mouse entry */
-				this.chart = this.chartService.highlightPoint(0, row.rowIndex - 1); /* highlight point on graph that corresponds to data hovered */
+				for ( let datasetIndex = 0; datasetIndex < 2; datasetIndex++ ){
+					this.chart = this.chartService.highlightPoint(datasetIndex, row.rowIndex - 1);
+				}
+				 /* highlight point on graph that corresponds to data hovered */
 			}
 		});
 		tbody?.addEventListener("mouseout", (event) => {
@@ -224,7 +223,6 @@ export class AppComponent implements OnInit {
 	private scoreRuns(): void {
 		console.log("table data: ", this.tableData)
 		let clonedData = this.tableData;
-		let scoreSums: Array<number> = [];
 
 		let sortedDistance = clonedData.slice().sort((a: number[], b: number[]) => a[1] - b[1])
 		let sortedPace = clonedData.slice().sort((a: number[], b: number[]) => b[3] - a[3])
@@ -250,31 +248,7 @@ export class AppComponent implements OnInit {
 	/* chart functions */
 	private fillChartData(): void {
 		this.destroyChart();
-		this.chartData = {
-			labels: this.tableData.slice(0).map((item: any[]) => item[0]), // Dates
-			datasets: [
-				{
-					label: "Distance",
-					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[1])),
-					borderColor: "#302868",
-					borderWidth: 4,
-					pointRadius: 5,
-					hoverBorderWidth: 10,
-					hoverBorderColor: "#FF00B7",
-					yAxisID: "y"
-				},
-				{
-					label: "Run Score",
-					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[4])),
-					borderColor: "#302868",
-					borderWidth: 4,
-					pointRadius: 5,
-					hoverBorderWidth: 10,
-					hoverBorderColor: "#FF00B7",
-					yAxisID: "y1"
-				}
-			]
-		};
+		this.chartData = this.chartService.fillData(this.tableData, 0, 1, 4)
 		this.generateChart();
 	}
 	private generateChart(): void {

@@ -3,20 +3,9 @@
 </head>
 
 <div class="container">
-	<div class="toolbar" role="banner">
-		<div class="button-container">
-			<div class="button" (click)="createTable()">View Data</div>
-			<div class="button" (click)="openDataEntry()">Add Entry</div>
-		</div>
-		<div class="spacer"></div>
-			<a href="https://github.com/BenjiDalton" target="_blank" rel="noopener">
-				<img
-				width="60"
-				alt="Github logo"
-				src="https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png"
-				/>
-			</a>
-	</div>
+	<app-toolbar>
+
+	</app-toolbar>
 	<!-- <div class="new-entry-button" (click)="openDataEntry()">Add Entry</div> -->
 	<!-- <div class="new-entry-button" [ngStyle]="{'right': '40%'}">Log in</div> -->
 	<div class="pop-up-modal" id="physical-acitvity-entry">
