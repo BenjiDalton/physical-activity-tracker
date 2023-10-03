@@ -3,55 +3,8 @@
 </head>
 
 <div class="container">
-	<app-toolbar>
-
-	</app-toolbar>
-	<!-- <div class="new-entry-button" (click)="openDataEntry()">Add Entry</div> -->
-	<!-- <div class="new-entry-button" [ngStyle]="{'right': '40%'}">Log in</div> -->
-	<div class="pop-up-modal" id="physical-acitvity-entry">
-		<div class="content">
-			<div class="close-button" (click)="closeDataEntry()">&#10006;</div>
-			<div class="form-row">
-				<div class="form-group">
-					<!-- <label for="distanceEntry" style="left: 0px">Enter Player Name</label> -->
-					<input type="text" placeholder="Date" name="dateEntry" required>
-				</div>
-				<div class="form-group">
-					<!-- <label for="distanceEntry" style="left: 0px">Enter Player Name</label> -->
-					<input type="text" placeholder="Distance" name="distanceEntry" required>
-				</div>
-				<div class="form-group" style="flex-direction: row; justify-content: space-evenly;">
-					<!-- <label for="timeEntry" style="left: 0px">Time (hh:mm:ss)</label> -->
-					<div class="time-entry">
-						<input type="text" placeholder="00" name="hoursEntry" required>
-					</div>
-					<p>:</p>
-					<div class="time-entry">
-						<input type="text" placeholder="00" name="minutesEntry" required>
-					</div>
-					<p>:</p>
-					<div class="time-entry">
-						<input type="text" placeholder="00" name="secondsEntry" required>
-					</div>
-					<!-- <input type="text" placeholder="00:00:00" name="timeEntry" required> -->
-				</div>
-				<div class="form-group">
-					<!-- <label for="timeEntry" style="left: 0px">Enter Player Name</label> -->
-					<input type="text" placeholder="Pace (mi/min)" name="paceEntry" required>
-				</div>
-				<!-- <div class="form-group">
-					<!-- <label for="timeEntry" style="left: 0px">Enter Player Name</label> -->
-					<!-- <input type="text" placeholder="Gen is the biggest dork I have ever met no cap" name="elevationEntry" required> -->
-				<!-- </div> -->
-			</div>
-			<div class="button" (click)="submitData()" style="bottom: 10%;">
-				Submit
-			</div>
-			
-			<!-- <div class="button add-player-button" (click)="addPlayer()"><i class="fa fa-user-plus"></i></div>
-			<div class="button close-button" (click)="closePlayerInput()">Done</div> -->
-		</div>
-	</div>
+	<app-toolbar></app-toolbar>
+	<app-modal></app-modal>
 	<table class="table-latitude" id="dataTable" style="display: none;">
 		<caption>Physical Activity Data</caption>
 		<thead>

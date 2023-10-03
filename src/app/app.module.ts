@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToolbarComponent } from './core/toolbar/toolbar/toolbar.component';
+import { ModalComponent } from './core/modal/modal/modal.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-  ToolbarComponent
+  ToolbarComponent,
+  ModalComponent
 	],
 	imports: [
 		BrowserModule,
