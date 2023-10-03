@@ -1,3 +1,5 @@
+@import 'src/theme-colors';
+
 * {
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -9,162 +11,7 @@
 	overflow: hidden;
 	background-color: inherit;
 
-	.toolbar {
-		display: flex;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 60px;
-		align-items: center;
-		background-color: #6aa1c4;
-		font-weight: 600;
-		border-radius: 0px;
-		img {
-		  margin-right: 20px;
-		}
-
-		.button-container {
-			position: relative;
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;  
-			height: inherit;
-
-			.button {
-				all: unset;
-				display: flex;
-				flex-direction: row;
-				justify-content: center;
-				align-items: center;
-				background-color: inherit;
-				border-radius: 4px;
-				width: auto;
-				height: inherit;
-				padding: 0 10px 0;
-				transition: all 0.2s ease-in-out;
-			}
-			.button.active {
-				background-color: #424b50;
-			}
-			.button:hover {
-				cursor: pointer;
-				transform: scale(110%);
-			}
-		}
-		.spacer {
-			flex: 1;
-		}
-	}
-
-	.pop-up-modal {
-		display: none; 
-		position: fixed;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		z-index: 1;
-		left: 0;
-		top: 0;
-		width: 100%; 
-		height: 100%;
-		overflow: auto;
-		background-color: rgb(0, 0, 0);
-		background-color: rgba(0, 0, 0, 0.4);
-		font-size: 42;
-		z-index: 999;
-
-		.content {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			width: 70%;
-			height: 30%;
-			background-color: #fefefe;
-			margin: 10% auto;
-			padding: 20px;
-			border: 1px solid #888;
-
-			.form-row {
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: space-between;
-				.form-group {
-					flex: 1;
-					margin-right: 20px;
-					display: flex;
-					flex-direction: column;
-					label {
-						font-size: 30px;
-						font-weight: bold;
-						top: 10%;
-						padding-left: 5%;
-					}
-					input[type=text] {
-						top: 22%;
-						padding: 5%;
-						margin: 5px 0 22px 0;
-						border: none;
-						background: #f1f1f1;
-						font-size: 24px;
-						text-align: center;
-					}
-					.time-entry {
-						input[type=text] {
-							top: 22%;
-							padding: 5%;
-							margin: 5px 0 22px 0;
-							border: none;
-							background: #f1f1f1;
-							font-size: 24px;
-							text-align: center;
-							max-width: 50px;
-						}
-					}
-				}
-			}
-
-			.button {
-				position: absolute;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: 20%;
-				height: 50px;
-				border: 1px solid black;
-				border-radius: 5px;
-				text-align: center;
-				color: rgb(0, 0, 0);
-				font-size: xx-large;
-				-webkit-user-select: none;
-				user-select: none;
-				
-			}
-			.close-button {
-				position: absolute;
-				top: 10%;
-				right: 5%;
-				font-size: 30px;
-				font-weight: 600;
-				color: rgb(86 82 106);
-			}
-			.close-button:hover {
-				cursor: pointer;
-				transform: scale(110%);
-			}
-			.close-button:active {
-				background-color: rgba(96, 97, 96, 0.35);
-			}
-			.button:hover {
-				cursor: pointer;
-				transform: translateY(-3px);
-			}
-		}
-	}
+	
 
 	.calendar {
 		display:inline-grid;
@@ -267,10 +114,6 @@
 		max-height: 600px;
 		z-index: -1;
 	}
-	$background: #efefef;
-	$lfs-blue: #006ac6;
-	$lfs-slateblue: #334288;
-	$lfs-grey: #454647;
 
 	.table-latitude {
 		border-collapse: collapse;
@@ -283,24 +126,24 @@
 		caption {
 			text-transform: uppercase;
 			font-weight: bold;
-			color: $lfs-slateblue;
+			color: $theme-slateblue;
 			text-align: center;
 		}
 		thead {
-			border-top: 2px solid $lfs-slateblue;
-			border-bottom: 2px solid $lfs-slateblue;
+			border-top: 2px solid $theme-slateblue;
+			border-bottom: 2px solid $theme-slateblue;
 			th {
 				text-transform: uppercase;
 				text-align: center;
 				padding: 10px;
-				color: $lfs-blue;
+				color: $theme-blue;
 				border: 1px solid #a52f2f;
 			}
 		}
 		tbody {
 			tr {
 				border-bottom: 1px solid #F1F1F1;
-				color: $lfs-grey;
+				color: $theme-grey;
 				td {
 					padding: 10px;
 					border: 1px solid #F1F1F1;
@@ -312,9 +155,9 @@
 			}
 		}
 		tfoot {
-			color: $lfs-slateblue;
+			color: $theme-slateblue;
 			font-style: italic;
-			border-bottom: 2px solid $lfs-slateblue;
+			border-bottom: 2px solid $theme-slateblue;
 			tr {
 				td {
 					padding: 10px;

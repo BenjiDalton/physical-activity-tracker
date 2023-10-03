@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit, ElementRef, Renderer2 } from '@angula
 import { DataUploadService } from './services/data-upload.service';
 import { ChartService } from './services/chart.service';
 import { Chart } from 'chart.js/auto';
+import { clone } from 'chart.js/dist/helpers/helpers.core';
+import { discardPeriodicTasks } from '@angular/core/testing';
 
 @Component({
 	selector: 'app-root',
@@ -102,13 +104,9 @@ export class AppComponent implements OnInit {
 	}
 	/* table functions */
 	public createTable(): void {
-		let table = document.getElementById('dataTable') as HTMLElement;
-		// if ( table.style.display !== "none" ) {
-		// 	table.parentNode?.removeChild(table);
-		// }
 		this.createTableHeaders();
 		this.populateTableWithData();
-		this.fillChartData();
+		this.scoreRuns();
 	}
 	private createTableHeaders(): void {
 		let tableHeadersRow = document.getElementById("tableHeaders");
@@ -155,7 +153,10 @@ export class AppComponent implements OnInit {
 			if (target.tagName.toLowerCase() === "td") {
 				let row = target.parentElement as HTMLTableRowElement; /* grab specific cells entire row */
 				row.style.backgroundColor = "rgba(0, 0, 0, .50)" /* highlight entire row on mouse entry */
-				this.chart = this.chartService.highlightPoint(0, row.rowIndex - 1); /* highlight point on graph that corresponds to data hovered */
+				for ( let datasetIndex = 0; datasetIndex < 2; datasetIndex++ ){
+					this.chart = this.chartService.highlightPoint(datasetIndex, row.rowIndex - 1);
+				}
+				 /* highlight point on graph that corresponds to data hovered */
 			}
 		});
 		tbody?.addEventListener("mouseout", (event) => {
@@ -167,6 +168,7 @@ export class AppComponent implements OnInit {
 		});
 	}
 	public sortTable(target: any): void {
+		this.scoreRuns();
 		var table, rows, switching, i, x, y, shouldSwitch, sortDirection, switchcount = 0;
 		/* get index of column chosen */
 		let columnIndex = this.tableColumns.indexOf(target.getAttribute("data-sort-by"));
@@ -177,7 +179,7 @@ export class AppComponent implements OnInit {
 			switching = false;
 			rows = table.rows;
 			// loop through rows, ignoring header row
-			for (i = 1; i < (rows.length - 1); i++) {
+			for ( i = 1; i < (rows.length - 1); i++ ) {
 			// Start by saying there should be no switching:
 			shouldSwitch = false;
 			// get rows to compare from specific column pressed
@@ -217,23 +219,36 @@ export class AppComponent implements OnInit {
 			}
 		}
 	}
+
+	private scoreRuns(): void {
+		console.log("table data: ", this.tableData)
+		let clonedData = this.tableData;
+
+		let sortedDistance = clonedData.slice().sort((a: number[], b: number[]) => a[1] - b[1])
+		let sortedPace = clonedData.slice().sort((a: number[], b: number[]) => b[3] - a[3])
+		let distanceScores = this.calculateScores(clonedData, sortedDistance)
+		let paceScores = this.calculateScores(clonedData, sortedPace)
+
+		for ( let i = 0; i < (distanceScores.length); i++ ) {
+			this.tableData[i][this.tableData[i].length] = distanceScores[i] + paceScores[i];
+		}
+		
+		this.fillChartData();
+	}
+	private calculateScores(dataArray: Array<any>, sortedData: Array<any>): Array<any> {
+		const scores: number[] = [];
+		const length = dataArray.length;
+		for ( let data of dataArray ) {
+			let indexInSorted = sortedData.indexOf(data);
+			let score = 1 + (indexInSorted / (length - 1)) * (length - 1);
+			scores.push(score);
+		}
+		return scores;
+	}
 	/* chart functions */
 	private fillChartData(): void {
 		this.destroyChart();
-		this.chartData = {
-			labels: this.tableData.slice(0).map((item: any[]) => item[0]), // Dates
-			datasets: [
-				{
-					label: "Distance",
-					data: this.tableData.slice(0).map((item: any[]) => parseFloat(item[1])),
-					borderColor: "#302868",
-					borderWidth: 4,
-					pointRadius: 5,
-					hoverBorderWidth: 10,
-					hoverBorderColor: "#FF00B7"
-				}
-			]
-		};
+		this.chartData = this.chartService.fillData(this.tableData, 0, 1, 4)
 		this.generateChart();
 	}
 	private generateChart(): void {
