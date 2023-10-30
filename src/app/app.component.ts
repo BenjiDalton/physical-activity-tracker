@@ -53,9 +53,6 @@ export class AppComponent implements OnInit {
 			}
 		  });
 		});
-
-
-		
 	}
 
 	/* pop up modal functions */
@@ -153,7 +150,7 @@ export class AppComponent implements OnInit {
 			if (target.tagName.toLowerCase() === "td") {
 				let row = target.parentElement as HTMLTableRowElement; /* grab specific cells entire row */
 				row.style.backgroundColor = "rgba(0, 0, 0, .50)" /* highlight entire row on mouse entry */
-				for ( let datasetIndex = 0; datasetIndex < 2; datasetIndex++ ){
+				for ( let datasetIndex = 0; datasetIndex < 1; datasetIndex++ ){
 					this.chart = this.chartService.highlightPoint(datasetIndex, row.rowIndex - 1);
 				}
 				 /* highlight point on graph that corresponds to data hovered */

@@ -11,34 +11,25 @@
 				<input type="text" placeholder="Distance" name="distanceEntry" required>
 			</div>
 			<div class="form-group" style="flex-direction: row; justify-content: space-evenly;">
-				<!-- <label for="timeEntry" style="left: 0px">Time (hh:mm:ss)</label> -->
 				<div class="time-entry">
-					<input type="text" placeholder="00" name="hoursEntry" required>
+					<input type="text" placeholder="00" name="hoursEntry" required style="height: 50px;">
 				</div>
 				<p>:</p>
 				<div class="time-entry">
-					<input type="text" placeholder="00" name="minutesEntry" required>
+					<input type="text" placeholder="00" name="minutesEntry" required style="height: 50px;">
 				</div>
 				<p>:</p>
 				<div class="time-entry">
-					<input type="text" placeholder="00" name="secondsEntry" required>
+					<input type="text" placeholder="00" name="secondsEntry" required style="height: 50px;">
 				</div>
-				<!-- <input type="text" placeholder="00:00:00" name="timeEntry" required> -->
 			</div>
 			<div class="form-group">
-				<!-- <label for="timeEntry" style="left: 0px">Enter Player Name</label> -->
 				<input type="text" placeholder="Pace (mi/min)" name="paceEntry" required>
 			</div>
-			<!-- <div class="form-group">
-				<!-- <label for="timeEntry" style="left: 0px">Enter Player Name</label> -->
-				<!-- <input type="text" placeholder="Gen is the biggest dork I have ever met no cap" name="elevationEntry" required> -->
-			<!-- </div> -->
 		</div>
 		<div class="button" (click)="appComponent.submitData()" style="bottom: 10%;">
 			Submit
 		</div>
-		
-		<!-- <div class="button add-player-button" (click)="addPlayer()"><i class="fa fa-user-plus"></i></div>
-		<div class="button close-button" (click)="closePlayerInput()">Done</div> -->
+
 	</div>
 </div>
